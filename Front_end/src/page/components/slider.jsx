@@ -1,6 +1,12 @@
 import React from 'react';
 import { Carousel } from 'antd';
 import { Link } from "react-router-dom";
+import {
+  CarOutlined,
+  DollarOutlined,
+  SafetyCertificateOutlined,
+  CustomerServiceOutlined,
+} from "@ant-design/icons";
 
 const Slider = () => {
   const onChange = (currentSlide) => {
@@ -59,23 +65,41 @@ const Slider = () => {
 
         </div>
       </div>
-      <div className="w-fit m-auto flex justify-around items-center flex-wrap lg:gap-25 gap-4 mt-3 mb-5">
-        <div className="bg-white text-black font-bold  text-[18px] shadow-lg px-5 py-7 rounded min-w-[250px] text-center">
-          ដឹកជញ្ជូន២៥ខេត្តក្រុង
-        </div>
+     <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-8 mt-6 mb-10 cursor-pointer">
+  <div className="group bg-white border border-gray-100 rounded-2xl px-6 py-8 min-w-[260px]
+                  text-center shadow-md hover:shadow-xl transition duration-300">
+    <CarOutlined className="text-4xl text-blue-600 mb-3 group-hover:scale-110 transition" />
+    <p className="text-gray-800 font-semibold text-[17px] tracking-wide">
+      ដឹកជញ្ជូន២៥ខេត្តក្រុង
+    </p>
+  </div>
 
-        <div className="bg-white text-black font-bold  text-[18px] shadow-lg px-4 py-7 rounded min-w-[250px] text-center">
-          តម្លៃពិសេសជាងគេក្នុងទីក្រុង
-        </div>
+  <div className="group bg-white border border-gray-100 rounded-2xl px-6 py-8 min-w-[260px]
+                  text-center shadow-md hover:shadow-xl transition duration-300">
+    <DollarOutlined className="text-4xl text-green-600 mb-3 group-hover:scale-110 transition" />
+    <p className="text-gray-800 font-semibold text-[17px] tracking-wide">
+      តម្លៃពិសេសជាងគេក្នុងទីក្រុង
+    </p>
+  </div>
 
-        <div className="bg-white text-black font-bold text-[18px] shadow-lg px-4 py-7 rounded min-w-[250px] text-center">
-          ការធានាពីហាងនិងក្រុមហ៊ុន
-        </div>
+  <div className="group bg-white border border-gray-100 rounded-2xl px-6 py-8 min-w-[260px]
+                  text-center shadow-md hover:shadow-xl transition duration-300">
+    <SafetyCertificateOutlined className="text-4xl text-emerald-600 mb-3 group-hover:scale-110 transition" />
+    <p className="text-gray-800 font-semibold text-[17px] tracking-wide">
+      ការធានាពីហាងនិងក្រុមហ៊ុន
+    </p>
+  </div>
 
-        <div className="bg-white text-black font-bold text-[18px] shadow-lg px-4 py-7 rounded min-w-[250px] text-center">
-          ជំនួយតាមអ៊ីនធឺណិត
-        </div>
-      </div>
+  <div className="group bg-white border border-gray-100 rounded-2xl px-6 py-8 min-w-[260px]
+                  text-center shadow-md hover:shadow-xl transition duration-300">
+    <CustomerServiceOutlined className="text-4xl text-purple-600 mb-3 group-hover:scale-110 transition" />
+    <p className="text-gray-800 font-semibold text-[17px] tracking-wide">
+      ជំនួយតាមអ៊ីនធឺណិត
+    </p>
+  </div>
+
+</div>
+
 
     </>
 

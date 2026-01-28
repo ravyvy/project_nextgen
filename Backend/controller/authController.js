@@ -58,7 +58,7 @@ const login = (req, res) => {
             }
         }
         const token = jwt.sign(
-        { id:user.id,email:user.email } ,JWT_SECRET , {expiresIn: "1d"} );
+        { id:user.id,email:user.email } ,JWT_SECRET , {expiresIn: "7d"} );
         res.json({
             status : true,
             message:"Login success!",

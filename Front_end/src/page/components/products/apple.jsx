@@ -1,19 +1,38 @@
-import React, { useState } from 'react';
-import Navbar from '../navbar';
-import Footer from '../footer';
-import { Pagination } from 'antd';
+import React, { useState, useEffect } from "react";
+import Navbar from "../navbar";
+import Footer from "../footer";
+import { Pagination } from "antd";
 import { Link } from "react-router-dom";
-import { accessories } from "./datas";   // make sure path is correct
+import axios from "axios";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 12;
 
-const apple = () => {
+const Rog = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [rogProducts, setRogProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 1. Filter only ROG products
-  const rogProducts = accessories.filter(item => item.name === "apple");
+  useEffect(() => {
+    axios
+      .get("http://localhost:9000/getall")
+      .then((res) => {
+        const data = res.data.data || [];
 
-  // 2. Slice products by pagination
+        // 🔥 filter only ROG products
+        const rogOnly = data.filter(
+          (item) => item.name?.toLowerCase() === "apple"
+        );
+
+        setRogProducts(rogOnly);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching ROG products:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  // Pagination
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
   const currentProducts = rogProducts.slice(startIndex, endIndex);
@@ -23,17 +42,21 @@ const apple = () => {
     window.scrollTo(0, 0);
   };
 
+  if (loading) {
+    return <p className="text-center mt-20">Loading ROG products...</p>;
+  }
+
   return (
     <>
       <Navbar />
 
       <div className="max-w-[1300px] mx-auto mt-10">
-        <h1 className="text-black font-bold text-3xl mb-4">APPLE PRODUCTS</h1>
+        <h1 className="text-black font-bold text-3xl mb-4">ROG PRODUCTS</h1>
         <hr className="border border-gray-300 mb-6" />
 
         {/* PRODUCT LIST */}
         <div className="flex gap-6 flex-wrap justify-center">
-          {currentProducts.map(item => (
+          {currentProducts.map((item) => (
             <div
               key={item.id}
               className="bg-white shadow-md w-[300px] rounded-sm relative"
@@ -46,7 +69,7 @@ const apple = () => {
 
               <Link to={`/categories/details/${item.id}`}>
                 <img
-                  src={item.img}
+                  src={`http://localhost:9000/images/${item.img}`}
                   alt={item.title}
                   className="w-full h-[300px] object-contain"
                 />
@@ -54,7 +77,7 @@ const apple = () => {
                 {item.stock && (
                   <h3
                     className={`inline p-1 ms-3 rounded-sm ${
-                      item.stock === "In stock"
+                      item.stock === "in stock"
                         ? "bg-green-600 text-white"
                         : "bg-red-600 text-white"
                     }`}
@@ -85,9 +108,10 @@ const apple = () => {
           />
         </div>
       </div>
-      <Footer/>
+
+      <Footer />
     </>
   );
 };
 
-export default apple;
+export default Rog;

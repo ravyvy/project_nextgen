@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 // 1. GET ALL CATEGORIES
 const getall = (req, res) => {
-    const sql = "SELECT * FROM category";
+    const sql = "SELECT * FROM category ORDER BY id DESC";
 
     db.query(sql, (err, data) => {
         if (err) {

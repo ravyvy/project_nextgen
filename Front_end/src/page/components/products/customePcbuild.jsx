@@ -1,11 +1,11 @@
-// CustomePcbuild.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../navbar";
 import Footer from "../footer";
 import { Modal, Input, Pagination } from "antd";
-import { accessories } from "./datas";
 import Swal from "sweetalert2";
 import { useCart } from "react-use-cart";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const { Search } = Input;
 
@@ -14,15 +14,41 @@ const CustomePcbuild = () => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const [categories, setCategories] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
-  const pageSize = 4; // number of products per page
+  const pageSize = 6; // number of products per page
 
-  // Get RAM, CPU, GPU categories
-  const categories = ["RAM", "CPU", "GPU"];
-  const filteredCategories = accessories.filter((cat) =>
-    categories.includes(cat.name)
-  );
+  // Fetch categories (RAM, CPU, GPU) from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/getall");
+        const apiData = response.data.data || [];
+
+        // Filter only relevant categories
+        const filtered = apiData.filter((cat) =>
+          ["ram", "cpu", "gpu"].includes(cat.name)
+        );
+
+        // Normalize products: ensure each product has img field
+        const normalized = filtered.map((cat) => {
+          const products = (cat.products || []).map((p) => ({
+            ...p,
+            img: p.image || cat.img || null, // 🔥 normalize image
+          }));
+
+          return { ...cat, products };
+        });
+
+        setCategories(normalized);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // Click on category
   const handleItemClick = (item) => {
@@ -35,7 +61,9 @@ const CustomePcbuild = () => {
   // Filter products by search text
   const filteredProducts =
     selectedItem?.products?.filter((p) =>
-      p.name.toLowerCase().includes(searchText.toLowerCase())
+      (p.name || p.title || "")
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
     ) || [];
 
   // Paginate products
@@ -52,22 +80,22 @@ const CustomePcbuild = () => {
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-      draggable: true
+      draggable: true,
     }).then((result) => {
       if (result.isConfirmed) {
         addItem({
           id: product.id,
-          title: product.name,
+          title: product.name || product.title,
           price: product.price || 0,
           img: product.img,
-          quantity: 1
+          quantity: 1,
         });
 
         Swal.fire({
           title: "Added to cart!",
           icon: "success",
           timer: 1500,
-          showConfirmButton: false
+          showConfirmButton: false,
         });
       }
     });
@@ -85,14 +113,14 @@ const CustomePcbuild = () => {
 
         {/* CATEGORY LIST */}
         <div className="flex gap-10 flex-wrap justify-center cursor-pointer">
-          {filteredCategories.map((item) => (
+          {categories.map((item) => (
             <div
               key={item.id}
               className="shadow-md rounded-sm p-2 hover:scale-105 transition"
               onClick={() => handleItemClick(item)}
             >
               <img
-                src={item.img}
+                src={`http://localhost:9000/images/${item.img}`}
                 alt={item.name}
                 className="w-24 h-20 object-contain"
               />
@@ -119,6 +147,7 @@ const CustomePcbuild = () => {
             size="large"
             className="mb-5"
             onChange={(e) => setSearchText(e.target.value)}
+              
           />
 
           {/* PRODUCTS */}
@@ -129,21 +158,20 @@ const CustomePcbuild = () => {
                   key={p.id}
                   className="rounded-md p-4 shadow hover:shadow-lg transition flex items-center gap-5"
                 >
-                  <img
-                    src={p.img}
-                    alt={p.name}
-                    className="w-24 h-24 object-contain"
-                  />
-                  <div className="flex-1">
-                    <p className="font-bold text-lg">{p.name}</p>
-                    <p className="text-gray-600">{p.price}</p>
-                  </div>
-                  <button
-                    className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
-                    onClick={() => handleAddToCart(p)}
+                  <Link
+                    to={`/categories/details/${p.id}`}
+                    className="flex items-center gap-5 w-full" // <-- make link flex
                   >
-                    Add
-                  </button>
+                    <img
+                      src={`http://localhost:9000/images/${p.image}`}
+                      alt={p.name || p.title}
+                      className="w-24 h-24 object-contain"
+                    />
+                    <div className="flex-1">
+                      <p className="font-bold text-black text-lg">{p.name || p.title}</p>
+                      <p className="text-gray-600">${p.price || 0}</p>
+                    </div>
+                  </Link>
                 </div>
               ))}
             </div>

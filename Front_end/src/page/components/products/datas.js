@@ -2,7 +2,7 @@
 export const accessories = [
   {
     id: 1,
-    name:"lattop",
+    name:"asus",
     img: "https://www.mastertechkh.com/storage/products/TGhDKyuRZ8kOizvU5W936DGClzS2Oz-metaRjE0RUE0N0EtNjk0QS00ODRFLUI1MjMtMDNCMjkzNzRBQzRFLnBuZw==-.png",
     imgone:"https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/dell-plus/db16255/media-gallery/non-touch/laptop-dell-plus-db16255nt-ice-bl-fpr-gallery-5.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=979&qlt=100,1&resMode=sharp2&size=979,804&chrss=full",
     imgtwo:"https://www.mastertechkh.com/storage/products/TGhDKyuRZ8kOizvU5W936DGClzS2Oz-metaRjE0RUE0N0EtNjk0QS00ODRFLUI1MjMtMDNCMjkzNzRBQzRFLnBuZw==-.png",
@@ -15,14 +15,13 @@ export const accessories = [
   },
    {
     id: 2,
-    name:"lattop",
+    name:"asus",
     img: "https://pngimg.com/d/macbook_PNG35.png",
     imgone:"https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/dell-plus/db16255/media-gallery/non-touch/laptop-dell-plus-db16255nt-ice-bl-fpr-gallery-5.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=979&qlt=100,1&resMode=sharp2&size=979,804&chrss=full",
     title: "Macbook Pro 2024",
     price: 2500,
     stock: "In stock",
-    description:
-      "The latest Macbook Pro with M2 chip, high performance and sleek design.",
+    description:"The latest Macbook Pro with M2 chip, high performance and sleek design.",
   },
    {
     id: 18,
@@ -92,19 +91,17 @@ export const accessories = [
     id: 531,
     name:"chair",
     img: "https://www.mastertechkh.com/storage/products/ecoSDlvXUCTkmDReavG5Fh4UvzKdkf-metaRFhSQUNFUiBGT1JNVUxBIEJMQUNLLVJFRC5qcGc=-.jpg",
-    imgone:
-      "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/dell-plus/db16255/media-gallery/non-touch/laptop-dell-plus-db16255nt-ice-bl-fpr-gallery-5.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=979&qlt=100,1&resMode=sharp2&size=979,804&chrss=full",
+    imgone:"https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/dell-plus/db16255/media-gallery/non-touch/laptop-dell-plus-db16255nt-ice-bl-fpr-gallery-5.psd?fmt=png-alpha&pscan=auto&scl=1&hei=804&wid=979&qlt=100,1&resMode=sharp2&size=979,804&chrss=full",
     title: "Macbook Pro 20004",
     price: 2500,
     stock: "In stock",
-    description:
-      "The latest Macbook Pro with M2 chip, high performance and sleek design.",
+    description:"The latest Macbook Pro with M2 chip, high performance and sleek design.",
   },
   
   //chair end
   {
     id: 3,
-    name:"lattop",
+    name:"asus",
     img: "https://www.cnet.com/a/img/resize/7b691d3a5413570bb80c5e074142e58ffb1c5d76/hub/2020/05/12/47f08d3b-c5e7-4002-9128-1d5b6b9d778f/dell-xps-17.png?auto=webp&fit=crop&height=675&width=1200",
     title: "Dell XPS 17",
     dis: "PROMOSION",
@@ -115,7 +112,7 @@ export const accessories = [
 
   {
     id: 4,
-    name:"lattop",
+    name:"asus",
     img: "https://png.pngtree.com/png-clipart/20240915/original/pngtree-sony-vaio-png-image_16011770.png",
     title: "Sony Vaio Thin Series",
     price: 1800,
@@ -126,7 +123,7 @@ export const accessories = [
 
   {
     id: 5,
-    name:"lattop",
+    name:"asus",
     img: "https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/13-laptop-platinum-right-render-fy25:VP4-1260x795?fmt=png-alpha",
     title: "Microsoft Surface 13",
     price: 2100,
@@ -137,7 +134,7 @@ export const accessories = [
 
   {
     id: 6,
-    name:"lattop",
+    name:"asus",
     img: "https://www.cnet.com/a/img/resize/7b691d3a5413570bb80c5e074142e58ffb1c5d76/hub/2020/05/12/47f08d3b-c5e7-4002-9128-1d5b6b9d778f/dell-xps-17.png?auto=webp&fit=crop&height=675&width=1200",
     title: "Dell XPS 17",
     price: 2200,
@@ -147,7 +144,7 @@ export const accessories = [
 
   {
     id: 7,
-    name:"lattop",
+    name:"asus",
     img: "https://png.pngtree.com/png-clipart/20240915/original/pngtree-sony-vaio-png-image_16011770.png",
     title: "Sony Vaio Thin Series",
     price: 1800,
@@ -158,7 +155,7 @@ export const accessories = [
 
   {
     id: 8,
-    name:"lattop",
+    name:"asus",
     img: "https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/13-laptop-platinum-right-render-fy25:VP4-1260x795?fmt=png-alpha",
     title: "Microsoft Surface 13",
     price: 2100,

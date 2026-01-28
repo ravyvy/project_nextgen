@@ -1,4 +1,5 @@
 const db = require('../database/db')
+
 const getall_data = (req, res) => {
     const { id } = req.params;
     // Step 1: get the category
@@ -30,7 +31,6 @@ const getall_data = (req, res) => {
         });
     });
 };
-
 const getall = (req, res) => {
     // Step 1: Get all categories
     const categorySql = "SELECT * FROM category";
@@ -49,7 +49,7 @@ const getall = (req, res) => {
 
         // Step 2: For each category, get its products
         const categoryIds = categoryRows.map(cat => cat.id);
-        const productSql = `SELECT id, title, price, category_id FROM products WHERE category_id IN (?)`;
+        const productSql = `SELECT id, title, price, category_id , image FROM products WHERE category_id IN (?)`;
 
         db.query(productSql, [categoryIds], (err, productRows) => {
             if (err)
@@ -71,7 +71,7 @@ const getall = (req, res) => {
     });
 };
 
-module.exports = {
+module.exports = { 
     getall_data,
-    getall
+    getall,
 }

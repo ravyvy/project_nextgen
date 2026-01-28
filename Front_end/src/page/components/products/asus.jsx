@@ -1,27 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../navbar';
 import Footer from '../footer';
 import { Pagination } from 'antd';
 import { Link } from "react-router-dom";
-import { accessories } from "./datas";   // make sure path is correct
+import axios from 'axios';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 12;
 
-const asus = () => {
+const Asus = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 1. Filter only ROG products
-  const rogProducts = accessories.filter(item => item.name === "asus");
+  // Fetch ASUS products from API
+  useEffect(() => {
+    axios
+      .get('http://localhost:9000/getall') // replace with your API endpoint
+      .then((res) => {
+        const apiData = res.data.data;
 
-  // 2. Slice products by pagination
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const endIndex = startIndex + PAGE_SIZE;
-  const currentProducts = rogProducts.slice(startIndex, endIndex);
+        // Filter ASUS products
+        const asusProducts = apiData.filter(item => item.name === "asus");
+
+        // Flatten nested products if needed
+        const flattened = asusProducts.flatMap(item => 
+          item.products && item.products.length > 0
+            ? item.products.map(p => ({
+                id: p.id,
+                title: p.title,
+                img: p.img || item.img, // fallback if product.img is missing
+                price: p.price,
+                stock: p.stock,
+                dis: p.dis,
+              }))
+            : [{
+                id: item.id,
+                title: item.title,
+                img: item.img,
+                price: item.price,
+                stock: item.stock,
+                dis: item.dis,
+              }]
+        );
+
+        setProducts(flattened);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching ASUS products:", err);
+        setLoading(false);
+      });
+  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
+
+  // Pagination slice
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const currentProducts = products.slice(startIndex, endIndex);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <p className="text-center mt-10 text-gray-500">Loading ASUS products...</p>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -46,7 +95,7 @@ const asus = () => {
 
               <Link to={`/categories/details/${item.id}`}>
                 <img
-                  src={item.img}
+                  src={`http://localhost:9000/images/${item.img}`}
                   alt={item.title}
                   className="w-full h-[300px] object-contain"
                 />
@@ -54,7 +103,7 @@ const asus = () => {
                 {item.stock && (
                   <h3
                     className={`inline p-1 ms-3 rounded-sm ${
-                      item.stock === "In stock"
+                      item.stock === "in stock"
                         ? "bg-green-600 text-white"
                         : "bg-red-600 text-white"
                     }`}
@@ -80,14 +129,15 @@ const asus = () => {
           <Pagination
             current={currentPage}
             pageSize={PAGE_SIZE}
-            total={rogProducts.length}
+            total={products.length}
             onChange={handlePageChange}
           />
         </div>
       </div>
-      <Footer/>
+
+      <Footer />
     </>
   );
 };
 
-export default asus;
+export default Asus;

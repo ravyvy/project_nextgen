@@ -1,50 +1,76 @@
-import React, { useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
 import Footer from "./footer";
-import { accessories } from "./products/datas";
 import { Carousel } from "antd";
 import { useCart } from "react-use-cart";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Details = () => {
-  // message
-  const openMessage = () => {
-    return Swal.fire({
-      title: "Add this product to cart?",
-     icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      draggable: true
-    });
-  };
+  const navigate = useNavigate();
 
-
-  // end message
   const { addItem } = useCart(); // react-use-cart
   const { id } = useParams();
   const productId = Number(id); // ensure numeric
 
-  let product = null;
-
-  // 1️⃣ Search nested categories
-  let category = accessories.find(cat =>
-    cat.products?.some(p => p.id === productId)
-  );
-
-  if (category) {
-    product = category.products.find(p => p.id === productId);
-  }
-
-  // 2️⃣ Search single items
-  if (!product) {
-    product = accessories.find(item => item.id === productId);
-  }
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const carouselRef = useRef(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  // Fetch product from API
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/getall");
+        const apiData = response.data.data || [];
+
+        let found = null;
+
+        // 1️⃣ Search nested products in categories
+        for (let cat of apiData) {
+          if (Array.isArray(cat.products)) {
+            const child = cat.products.find((p) => p.id === productId);
+            if (child) {
+              found = { ...child, img: child.image || cat.img || null, imgone: child.imgone || null, imgtwo: child.imgtwo || null, imgtree: child.imgtree || null };
+              break;
+            }
+          }
+        }
+
+        // 2️⃣ Search top-level product
+        if (!found) {
+          const top = apiData.find((p) => p.id === productId);
+          if (top) {
+            found = { ...top, img: top.img || null, imgone: top.imgone || null, imgtwo: top.imgtwo || null, imgtree: top.imgtree || null };
+          }
+        }
+
+        setProduct(found);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching product:", err);
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="p-10 text-center">
+          <p className="text-gray-600 text-2xl">Loading product...</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   if (!product) {
     return (
@@ -58,12 +84,17 @@ const Details = () => {
     );
   }
 
-  const images = [
-    product.img,
-    product.imgone,
-    product.imgtwo,
-    product.imgtree
-  ].filter(Boolean);
+  const images = [product.img, product.imgone, product.imgtwo, product.imgtree].filter(Boolean);
+
+  const openMessage = () =>
+    Swal.fire({
+      title: "Add this product to cart?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      draggable: true,
+    });
 
   return (
     <div>
@@ -71,7 +102,6 @@ const Details = () => {
 
       <div className="max-w-[1000px] w-full mx-auto bg-white shadow-2xl mb-8 p-4 sm:p-6 rounded-lg">
         <div className="flex flex-col md:flex-row gap-6 lg:gap-10">
-
           {/* Carousel */}
           <div className="w-full md:w-1/2">
             <Carousel
@@ -83,7 +113,7 @@ const Details = () => {
               {images.map((img, index) => (
                 <img
                   key={index}
-                  src={img}
+                  src={`http://localhost:9000/images/${img}`}
                   alt="product"
                   className="w-full h-[300px] sm:h-[380px] lg:h-[420px] object-contain p-3 bg-white"
                 />
@@ -95,7 +125,7 @@ const Details = () => {
               {images.map((img, index) => (
                 <img
                   key={index}
-                  src={img}
+                  src={`http://localhost:9000/images/${img}`}
                   onClick={() => {
                     setCurrentImage(index);
                     carouselRef.current.goTo(index);
@@ -110,7 +140,7 @@ const Details = () => {
 
           {/* Product Details */}
           <div className="w-full md:w-1/2">
-            <h1 className="text-xl sm:text-2xl font-bold mb-4">{product.title}</h1>
+            <h1 className="text-xl sm:text-xl  mb-4"><span className="font-bold">Products :</span> {product.title}</h1>
 
             {product.price && (
               <p className="text-lg sm:text-xl font-extrabold text-orange-400 mb-4">
@@ -122,9 +152,7 @@ const Details = () => {
               <p className="text-lg sm:text-xl font-semibold mb-6">
                 Status:
                 <span
-                  className={`ml-2 border rounded-sm px-2 py-1 ${product.stock === "In stock"
-                    ? "bg-green-600 text-white"
-                    : "bg-red-600 text-white"
+                  className={`ml-2 border rounded-sm px-2 py-1 ${product.stock === "in stock" ? "bg-green-600 text-white" : "bg-red-600 text-white"
                     }`}
                 >
                   {product.stock}
@@ -133,57 +161,59 @@ const Details = () => {
             )}
 
             {product.description && (
-              <p className="text-gray-700 mb-6 leading-relaxed">
-                {product.description}
-              </p>
+              <p
+                className="text-gray-700 mb-6 text-sm"
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
             )}
 
             {/* Quantity Selector */}
             <div className="flex items-center gap-3 mb-6">
-              {/* <button
-                className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
-                onClick={() => setQuantity(prev => (prev > 1 ? prev - 1 : 1))}
-              >
-                -
-              </button> */}
               <span className="px-3 py-1 border rounded">{quantity}</span>
-              {/* <button
-                className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
-                onClick={() => setQuantity(prev => prev + 1)}
-              >
-                +
-              </button> */}
             </div>
 
             {/* Add to Cart Button */}
             <button
-              className="bg-blue-600 text-white p-3 rounded-lg text-lg hover:bg-blue-700 transition w-full sm:w-auto"
-              onClick={async () => {
-                const result = await openMessage(); // wait for user to click
-                if (result.isConfirmed) {
-                  // ✅ Only add to cart if user clicks "Yes"
-                  addItem({
-                    id: product.id,
-                    title: product.title,
-                    price: product.price || 0,
-                    img: product.img,
-                    description: product.description,
-                    brand: product.brand,
-                    quantity: quantity
-                  });
+              className="bg-green-600 text-white p-3 rounded-lg text-lg hover:bg-green-700 cursor-pointer transition w-full sm:w-auto"
+              onClick={
+                async () => {
+                  const token = localStorage.getItem("token");
+                  if (!token) {
+                    Swal.fire({
+                      title: "Please login ",
+                      text: "You must login to add product to cart",
+                      icon: "warning",
+                      confirmButtonText: "Login",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        navigate("/account/login");
+                      }
+                    });
+                    return;
+                  }
 
-                  Swal.fire({
-                    title: "Added to cart!",
-                    icon: "success",
-                    timer: 1500,
-                    showConfirmButton: false
-                  });
-                }
-              }}
+                  const result = await openMessage();
+                  if (result.isConfirmed) {
+                    addItem({
+                      id: product.id,
+                      title: product.title,
+                      price: product.price || 0,
+                      img: `http://localhost:9000/images/${product.img}`,
+                      description: product.description,
+                      brand: product.brand,
+                      quantity: quantity,
+                    });
+                    Swal.fire({
+                      title: "Add Successfully! 🗃️✅",
+                      icon: "success",
+                      timer: 1500,
+                      showConfirmButton: false,
+                    });
+                  }
+                }}
             >
               Add {quantity} to Cart
             </button>
-
           </div>
         </div>
       </div>

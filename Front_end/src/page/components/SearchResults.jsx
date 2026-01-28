@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { accessories } from "./products/datas";
+import axios from "axios";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import { useCart } from "react-use-cart";
@@ -11,69 +11,103 @@ const SearchResults = () => {
   const query =
     new URLSearchParams(location.search).get("query")?.toLowerCase() || "";
 
-  const flattenProducts = (data) => {
-    let result = [];
-    data.forEach((item) => {
-      if (Array.isArray(item.products)) {
-        item.products.forEach((child) => {
-          result.push({
-            id: child.id,
-            title: child.title,
-            img: child.img,
-            price: child.price,
-            description: child.description,
-            brand: child.brand,
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/getall");
+        const apiData = response.data.data || [];
+
+        // Flatten products and normalize image field
+        const flattenProducts = (data) => {
+          let result = [];
+          data.forEach((item) => {
+            if (Array.isArray(item.products) && item.products.length > 0) {
+              item.products.forEach((child) => {
+                result.push({
+                  id: child.id,
+                  title: child.title,
+                  price: child.price,
+                  description: child.description,
+                  brand: child.brand,
+                  img: child.image || item.img || null, // 🔥 normalize image
+                  category: item.name || "",            // add category for search
+                });
+              });
+            } else {
+              result.push({
+                id: item.id,
+                title: item.title,
+                price: item.price,
+                description: item.description,
+                brand: item.brand,
+                img: item.img || item.image || null, // 🔥 normalize image
+                category: item.name || "",
+              });
+            }
           });
-        });
-      } else {
-        result.push({
-          id: item.id,
-          title: item.title,
-          img: item.img,
-          price: item.price,
-          description: item.description,
-          brand: item.brand,
-        });
+          return result;
+        };
+
+        setProducts(flattenProducts(apiData));
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
       }
-    });
-    return result;
-  };
+    };
 
-  const allProducts = flattenProducts(accessories);
+    fetchProducts();
+  }, []);
 
-  const filtered = allProducts.filter((item) =>
-    (item.title || "").toLowerCase().includes(query)
+  // Filter by title OR category
+  const filtered = products.filter((item) =>
+    `${item.title} ${item.category}`.toLowerCase().includes(query)
   );
+
+  if (loading) return <p className="text-center mt-10">Loading products...</p>;
 
   return (
     <>
       <Navbar />
       <div className="max-w-[1300px] mx-auto mt-10">
-
-        <div className="flex flex-wrap gap-6 justify-center">
-          {filtered.map((item) => (
-            <div key={item.id} className="w-[300px] bg-white shadow p-3 rounded">
-
-              <img
-                src={item.img}
-                className="w-full h-[250px] object-contain"
-                alt={item.title}
-              />
-
-              <h2 className="font-bold mt-2">{item.title}</h2>
-              <p className="text-green-600 font-bold">${item.price}</p>
-
-              {/* 🔥 Add to Cart Button */}
-              <button
-                className="bg-blue-600 text-white w-full py-2 rounded mt-3 hover:bg-blue-700"
-                onClick={() => addItem(item)}
+        {filtered.length === 0 ? (
+          <p className="text-center text-gray-500">No products found.</p>
+        ) : (
+          <div className="flex flex-wrap gap-6 justify-center">
+            {filtered.map((item) => (
+              <div
+                key={item.id}
+                className="w-[300px] bg-white shadow p-3 rounded"
               >
-                Add to Cart
-              </button>
-
-            </div>
-          ))}
-        </div>
+                {/* Image (with fallback if missing) */}
+                <Link to={`/categories/details/${item.id}`}>
+                  <img
+                    src={`http://localhost:9000/images/${item.img}`}
+                    alt={item.title}
+                    className="w-full h-[300px] object-contain"
+                  />
+                  {item.stock && (
+                    <h3
+                      className={`inline p-1 ms-3 rounded-sm ${item.stock === "in stock"
+                          ? "bg-green-600 text-white"
+                          : "bg-red-600 text-white"
+                        }`}
+                    >
+                      {item.stock}
+                    </h3>
+                  )}
+                  <h2 className="text-gray-600 m-3">{item.title}</h2>
+                  {item.price && (
+                    <h1 className="text-black font-bold m-3">${item.price}</h1>
+                  )}
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <Footer />
     </>

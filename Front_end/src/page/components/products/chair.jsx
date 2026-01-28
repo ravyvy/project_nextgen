@@ -1,27 +1,78 @@
-import React, { useState } from 'react';
-import Navbar from '../navbar';
-import Footer from '../footer';
-import { Pagination } from 'antd';
+import React, { useState, useEffect } from "react";
+import Navbar from "../navbar";
+import Footer from "../footer";
+import { Pagination } from "antd";
 import { Link } from "react-router-dom";
-import { accessories } from "./datas";   // make sure path is correct
+import axios from "axios";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 12;
 
-const chair = () => {
+const Chair = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 1. Filter only ROG products
-  const rogProducts = accessories.filter(item => item.name === "chair");
+  useEffect(() => {
+    // Fetch data from API
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/getall");
+        const apiData = response.data.data || [];
 
-  // 2. Slice products by pagination
+        // 🔥 Flatten and normalize image field
+        const chairProducts = [];
+        apiData.forEach((item) => {
+          if (item.name?.toLowerCase() === "chair") {
+            // If category has products array
+            if (Array.isArray(item.products) && item.products.length > 0) {
+              item.products.forEach((child) => {
+                chairProducts.push({
+                  id: child.id,
+                  title: child.title,
+                  price: child.price,
+                  stock: child.stock,
+                  dis: child.dis,
+                  img: child.image || item.img || null,
+                });
+              });
+            } else {
+              // No child products
+              chairProducts.push({
+                id: item.id,
+                title: item.title,
+                price: item.price,
+                stock: item.stock,
+                dis: item.dis,
+                img: item.img || item.image || null,
+              });
+            }
+          }
+        });
+
+        setProducts(chairProducts);
+      } catch (err) {
+        console.error("Error fetching chair products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Pagination logic
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
-  const currentProducts = rogProducts.slice(startIndex, endIndex);
+  const currentProducts = products.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
+
+  if (loading) {
+    return <p className="text-center mt-20">Loading Chair products...</p>;
+  }
 
   return (
     <>
@@ -33,7 +84,7 @@ const chair = () => {
 
         {/* PRODUCT LIST */}
         <div className="flex gap-6 flex-wrap justify-center">
-          {currentProducts.map(item => (
+          {currentProducts.map((item) => (
             <div
               key={item.id}
               className="bg-white shadow-md w-[300px] rounded-sm relative"
@@ -46,7 +97,11 @@ const chair = () => {
 
               <Link to={`/categories/details/${item.id}`}>
                 <img
-                  src={item.img}
+                  src={
+                    item.img
+                      ? `http://localhost:9000/images/${item.img}`
+                      : "/no-image.png"
+                  }
                   alt={item.title}
                   className="w-full h-[300px] object-contain"
                 />
@@ -54,7 +109,7 @@ const chair = () => {
                 {item.stock && (
                   <h3
                     className={`inline p-1 ms-3 rounded-sm ${
-                      item.stock === "In stock"
+                      item.stock === "in stock"
                         ? "bg-green-600 text-white"
                         : "bg-red-600 text-white"
                     }`}
@@ -66,9 +121,7 @@ const chair = () => {
                 <h2 className="text-gray-600 m-3">{item.title}</h2>
 
                 {item.price && (
-                  <h1 className="text-black font-bold m-3">
-                    ${item.price}
-                  </h1>
+                  <h1 className="text-black font-bold m-3">${item.price}</h1>
                 )}
               </Link>
             </div>
@@ -80,14 +133,14 @@ const chair = () => {
           <Pagination
             current={currentPage}
             pageSize={PAGE_SIZE}
-            total={rogProducts.length}
+            total={products.length}
             onChange={handlePageChange}
           />
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };
 
-export default chair;
+export default Chair;

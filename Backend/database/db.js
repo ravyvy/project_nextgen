@@ -6,8 +6,8 @@ const db = mysql.createPool({
     password: "",
     database: "full_db",
     waitForConnections: true,
-    connectionLimit: 20,
-    queueLimit: 0
+    connectionLimit: 100,
+    queueLimit: 0,
+    timezone: "+07:00" // កំណត់ឱ្យត្រូវម៉ោងកម្ពុជា
 });
-
 module.exports = db;
