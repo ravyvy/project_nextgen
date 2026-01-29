@@ -80,7 +80,68 @@ const create = async (req, res) => {
   }
 };
 
+const changepassword_admin = async (req, res) => {
+  try {
+    const { id, oldPassword, newPassword, confirmPassword } = req.body;
+
+    if (!id) {
+      return res.status(400).json({
+        status: false,
+        message: "Admin ID missing",
+      });
+    }
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        status: false,
+        message: "All fields are required",
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        status: false,
+        message: "New password and confirm password do not match",
+      });
+    }
+
+    const sql = "SELECT password FROM admin WHERE id = ?";
+    db.query(sql, [id], async (err, data) => {
+      if (err) {
+        return res.status(500).json({ message: "Database error" });
+      }
+
+      if (data.length === 0) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const isMatch = await bcrypt.compare(oldPassword, data[0].password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Old password is incorrect" });
+      }
+
+      const hashed = await bcrypt.hash(newPassword, 10);
+
+      db.query(
+        "UPDATE admin SET password = ? WHERE id = ?",
+        [hashed, id],
+        (err) => {
+          if (err) {
+            return res.status(500).json({ message: "Update failed" });
+          }
+
+          res.json({ message: "Password updated successfully" });
+        }
+      );
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 module.exports = {
   login_admin,
-  create
+  create,
+  changepassword_admin
 };

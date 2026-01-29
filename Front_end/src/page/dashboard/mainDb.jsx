@@ -10,7 +10,9 @@ import {
     SettingOutlined,
     AppstoreOutlined,
     ShopOutlined,
-    LogoutOutlined
+    LogoutOutlined,
+    FileAddOutlined,
+    HistoryOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 
@@ -21,6 +23,7 @@ import CategoryPage from '../dashboard/categoryDb';
 import Product from '../dashboard/productsDb';
 import Sale from '../dashboard/saleDb';
 import Setting from '../dashboard/settingDb'
+import Invoiceold from '../dashboard/invoiceold'
 
 // import other pages similarly
 
@@ -52,7 +55,8 @@ const App = () => {
             case '2': return <CustomersPage />;
             case '3': return <CategoryPage />;
             case '4': return <Product />;
-            case '5': return <Sale />
+            case '5.1': return <Sale />
+            case '5.2': return <Invoiceold />
             case '6': return <Setting />
             default: return <MainPage />;
         }
@@ -84,14 +88,25 @@ const App = () => {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    selectedKeys={[activePage]}
                     onClick={handleMenuClick}
                     items={[
                         { key: '1', icon: <HomeOutlined />, label: 'Main' },
                         { key: '2', icon: <UserAddOutlined />, label: 'Customers' },
                         { key: '3', icon: <AppstoreOutlined />, label: 'Category' },
                         { key: '4', icon: <ShopOutlined />, label: 'Products' },
-                        { key: '5', icon: <DollarCircleOutlined />, label: 'invoice' },
+
+                        {
+                            key: 'sale',
+                            icon: <DollarCircleOutlined />,
+                            label: 'Invoice',
+                            children: [
+                                { key: '5.1', icon: <FileAddOutlined />, label: 'Invoice New' },
+                                { key: '5.2', icon: <HistoryOutlined />, label: 'Invoice old' },
+
+                            ],
+                        },
+
                         { key: '6', icon: <SettingOutlined />, label: 'Settings' },
                         { key: '7', icon: <LogoutOutlined />, label: 'Logout' },
                     ]}

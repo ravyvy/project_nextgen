@@ -1,5 +1,21 @@
 const db = require('../database/db');
 
+const totalold = (req , res ) => {
+   const sql = "SELECT * FROM order_store";
+   db.query(sql , (err , data ) => {
+        if(err){
+            res.json({
+                status:false,
+                message:"Select data order_store field"
+            })
+        }
+        res.status(200).json({
+            message:'select success',
+            data : data
+        })
+   })
+}
+// ====================== invoice===============
 const total = (req, res) => {
     // ១. កូពីទិន្នន័យទាំងអស់ពី dborder ទៅ order_store ក្នុងពេលតែមួយ
     const SQL_MOVE = `
@@ -23,6 +39,7 @@ const total = (req, res) => {
         });
     });
 };
+
 // store in order
 const storeOrder = (req , res ) => {
     const sqlQuery = "SELECT COUNT(id) AS totalOrders, SUM(total) AS totalAmount FROM order_store";
@@ -132,4 +149,5 @@ module.exports = {
     getMonthlySales,
     storeOrder,
     get_total,
+    totalold
 }

@@ -220,9 +220,9 @@ const CategoryDb = () => {
           />
           <button
             onClick={openCreateModal}
-            className="bg-green-600 px-6 py-2 text-white font-semibold rounded hover:bg-green-700"
+            className="bg-yellow-600 px-6 py-2 text-white font-semibold rounded cursor-pointer"
           >
-            Create New Product
+           ➕
           </button>
         </div>
       </div>
@@ -292,15 +292,15 @@ const CategoryDb = () => {
                   <td className="p-3 space-x-2 text-center">
                     <button
                       onClick={() => openEditModal(p)}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
+                      className="    text-white px-3 py-1 rounded text-sm cursor-pointer  hover:bg-yellow-600"
                     >
-                      Edit
+                      🔍
                     </button>
                     <button
                       onClick={() => handleDelete(p?.id)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
+                      className="  text-white px-3 py-1 rounded cursor-pointer text-sm  hover:bg-red-600"
                     >
-                      Delete
+                       🗑️
                     </button>
                   </td>
                 </tr>

@@ -65,15 +65,15 @@ const SaleDb = () => {
     if (loading) return <p style={{ textAlign: 'center', marginTop: '20px' }}>Loading...</p>;
 
     return (
-        <div style={{ padding: '30px', fontFamily: 'Arial, sans-serif' }}>
+        <div style={{ padding: '30px', fontFamily: 'Arial, "Khmer OS", sans-serif' }}>
 
             {/* Button Actions */}
-            <div style={{ textAlign: 'center', marginBottom: '20px', display: 'flex', justifyContent: '', gap: '10px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '30px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
                 {/* ប៊ូតុង Print */}
                 <button
                     onClick={handlePrint}
                     style={{
-                        padding: '10px 20px',
+                        padding: '12px 28px',
                         backgroundColor: 'black',
                         color: '#fff',
                         border: 'none',
@@ -82,7 +82,7 @@ const SaleDb = () => {
                         fontWeight: 'bold'
                     }}
                 >
-                    🖨️ Print Orders
+                    🖨️ បោះពុម្ព / Print
                 </button>
                 <button
                     onClick={handleClearData}
@@ -105,7 +105,9 @@ const SaleDb = () => {
 
             {/* Print Section */}
             <div className="print-area">
-                <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>បញ្ជីការកម្ម៉ង់ (Order List)</h2>
+                <h2 style={{ textAlign: 'center', marginBottom: '8px', fontSize: '20px' }}>
+                    បញ្ជីការលក់ថ្មីៗ (Sales / Order List New)
+                </h2>
 
                 {/* Total Count */}
                 {/* <p style={{ textAlign: 'center', marginBottom: '20px', fontSize: '1.1em', color: '#555' }}>
@@ -152,7 +154,7 @@ const SaleDb = () => {
                             <td></td>
                             <td></td>
                             <td className=" font-semibold text-gray-500" >
-                                Total&nbsp;:&nbsp; ${totals?.grand_total || 0}.00
+                                Total (សរុប)&nbsp;:&nbsp; ${totals?.grand_total || 0}.00
                             </td>
 
                         </tr>

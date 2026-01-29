@@ -86,10 +86,10 @@ const CustomersDb = () => {
                   <td className="py-3 px-4 text-center space-x-2">
                    
                     <button
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                      className="cursor-pointer text-white px-3 py-1 rounded  hover:bg-red-600"
                       onClick={() => handleDelete(user.id)}
                     >
-                      Delete
+                      🗑️
                     </button>
                   </td>
                 </tr>
