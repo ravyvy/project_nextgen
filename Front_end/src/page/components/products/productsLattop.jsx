@@ -30,7 +30,7 @@ const ProductsLattop = () => {
   if (loading) return <p className="text-center mt-10">Loading products...</p>;
 
   return (
-    <div className="max-w-[1300px] mx-auto mt-10">
+    <div className="max-w-[1300px]  mx-auto mt-10">
       {sections.map((section, index) => (
         <div key={index} className="mb-10">
           {/* Title section */}
