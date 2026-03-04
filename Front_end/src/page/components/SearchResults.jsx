@@ -85,11 +85,7 @@ const SearchResults = () => {
                 {/* Image (with fallback if missing) */}
                 <Link to={`/categories/details/${item.id}`}>
                   <img
-<<<<<<< HEAD
                     src={`https://project-nextgen-1dnjds.onrender.com/images/${item.img}`}
-=======
-                    src={`http://localhost:9000/images/${item.img}`}
->>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
                     alt={item.title}
                     className="w-full h-[300px] object-contain"
                   />
