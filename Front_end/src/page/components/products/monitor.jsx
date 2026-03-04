@@ -13,11 +13,7 @@ const Accessori = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-<<<<<<< HEAD
         const res = await axios.get("https://project-nextgen-1dnjds.onrender.com/getall");
-=======
-        const res = await axios.get("http://localhost:9000/getall");
->>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
         setAccessories(res.data?.data || []);
       } catch (err) {
         console.error("API error:", err);
