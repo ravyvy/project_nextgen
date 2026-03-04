@@ -19,11 +19,11 @@ const fs = require("fs");
 const path = require("path");
 
 const db = mysql.createConnection({
-  host: "nextgen-ravyfaii31-0eaa.c.aivencloud.com",
-  port: 15367,
-  user: "avnadmin",
-  password: "AVNS_Wnx8I1RNdlSx_IBcalP",
-  database: defaultdb,
+  host: process.env.MYSQLHOST,
+  port: process.env.MYSQLPORT,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
   connectTimeout: 30000,
   ssl: {
     ca: fs.readFileSync(path.join(__dirname, "ca.pem")),
