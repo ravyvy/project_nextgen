@@ -63,6 +63,8 @@ const Slider = () => {
             </div>
           </div>
 
+
+
         </div>
       </div>
      <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-8 mt-6 mb-10 cursor-pointer">
