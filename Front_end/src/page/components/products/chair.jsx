@@ -92,6 +92,7 @@ const Chair = () => {
             <div
               key={item.id}
               className="bg-white shadow-md w-full rounded-sm relative"
+              
             >
               {item.dis && (
                 <p className="bg-red-500 w-[120px] ps-2 rounded-br-lg rounded-tl-lg font-bold text-white">
@@ -103,11 +104,7 @@ const Chair = () => {
                 <img
                   src={
                     item.img
-<<<<<<< HEAD
                       ? `https://project-nextgen-1dnjds.onrender.com/images/${item.img}`
-=======
-                      ? `http://localhost:9000/images/${item.img}`
->>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
                       : "/no-image.png"
                   }
                   alt={item.title}
