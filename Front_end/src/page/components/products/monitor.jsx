@@ -13,7 +13,11 @@ const Accessori = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+<<<<<<< HEAD
         const res = await axios.get("https://project-nextgen-1dnjds.onrender.com/getall");
+=======
+        const res = await axios.get("http://localhost:9000/getall");
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
         setAccessories(res.data?.data || []);
       } catch (err) {
         console.error("API error:", err);
@@ -63,7 +67,11 @@ const Accessori = () => {
             <div key={item.id} className="bg-white shadow-sm lg:w-[24%] block">
               <Link to={`/categories/Accessoris/${item.name}`}>
                 <img
+<<<<<<< HEAD
                   src={`https://project-nextgen-1dnjds.onrender.com/images/${item.img}`}
+=======
+                  src={`http://localhost:9000/images/${item.img}`}
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
                   alt={item.title}
                   className="w-[200px] h-40 mx-auto"
                 />
@@ -145,17 +153,30 @@ const Accessori = () => {
             </h2>
             <hr className="border border-gray-300 mb-6" />
 
+<<<<<<< HEAD
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+=======
+            <div className="flex flex-wrap gap-6 justify-center">
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
               {dellProducts.map(product => (
                 <Link
                   key={product.id}
                   to={`/categories/details/${product.id}`}
+<<<<<<< HEAD
                   className="bg-white shadow-md p-4 w-full rounded-lg"
                 >
                   <img
                     src={`https://project-nextgen-1dnjds.onrender.com/images/${dellCategory.img}`}
                     alt={product.title}
                     className="w-full h-40 object-contain"
+=======
+                  className="bg-white shadow-md p-4 w-[250px] rounded-lg"
+                >
+                  <img
+                    src={`http://localhost:9000/images/${dellCategory.img}`}
+                    alt={product.title}
+                    className="w-[200px] h-[150px] mx-auto"
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
                   />
                   <p className="text-xl text-center mt-2">{product.title}</p>
                   {product.price && (
@@ -177,17 +198,30 @@ const Accessori = () => {
             </h2>
             <hr className="border border-gray-300 mb-6" />
 
+<<<<<<< HEAD
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+=======
+            <div className="flex flex-wrap gap-6 justify-center">
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
               {rogProducts.map(product => (
                 <Link
                   key={product.id}
                   to={`/categories/details/${product.id}`}
+<<<<<<< HEAD
                   className="bg-white shadow-md p-4 w-full rounded-lg"
                 >
                   <img
                     src={`https://project-nextgen-1dnjds.onrender.com/images/${rogCategory.img}`}
                     alt={product.title}
                     className="w-full h-40 object-contain"
+=======
+                  className="bg-white shadow-md p-4 w-[250px] rounded-lg"
+                >
+                  <img
+                    src={`http://localhost:9000/images/${rogCategory.img}`}
+                    alt={product.title}
+                    className="w-[200px] h-[150px] mx-auto"
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
                   />
                   <p className="text-xl text-center mt-2">{product.title}</p>
                   {product.price && (

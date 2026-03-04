@@ -9,7 +9,11 @@ app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+<<<<<<< HEAD
 // Serve images folder so they are accessible via https://project-nextgen-1dnjds.onrender.com/images/filename.jpg
+=======
+// Serve images folder so they are accessible via http://localhost:9000/images/filename.jpg
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
 app.use('/images', express.static(path.join(__dirname, 'uploads/images')));
 
 // setting route fetch to dashboard

@@ -2,7 +2,11 @@ const TelegramBot = require("node-telegram-bot-api");
 const db = require('../database/db')
 // Replace with your real bot token
 const token = "8043221726:AAHUtbYbW3ZVxW9HAl9eFGOdEv-6twMmH3A";
+<<<<<<< HEAD
 const bot = new TelegramBot(token, { polling: false });
+=======
+const bot = new TelegramBot(token, { polling: true });
+>>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
 const chat_id = 1698102973; // your Telegram ID
 
 const orderController = async (req, res) => {
