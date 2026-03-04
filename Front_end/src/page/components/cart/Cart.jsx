@@ -23,7 +23,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 // Required for PDF generation
-import jsPDF from "jsPDF";
+import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 // Fix Leaflet default marker icon issue
