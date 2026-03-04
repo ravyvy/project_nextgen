@@ -1,7 +1,9 @@
-
+import React from 'react';
 import Navbar from '../navbar';
 import Footer from '../footer';
-import { LinkedinOutlined, FacebookOutlined } from '@ant-design/icons';
+import { LinkedinOutlined, FacebookOutlined, TeamOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 
 const teamMembers = [
   {
@@ -40,45 +42,83 @@ const teamMembers = [
 
 const Team = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-inter transition-all duration-300">
       <Navbar />
 
-      <div className="py-12 bg-gray-100">
-        <h1 className="text-4xl font-bold mb-4 text-center">Our Team</h1>
-        <p className="text-gray-600 mb-10 max-w-xl text-center mx-auto">
-          Meet the amazing people behind our company. They make everything possible.
-        </p>
+      <main className="flex-grow max-w-[1400px] w-full mx-auto px-4 lg:px-10 py-12">
+        {/* Header Section */}
+        <div className="mb-16 text-center">
+          <Breadcrumb
+            className="mb-4 text-xs uppercase font-bold tracking-widest justify-center"
+            items={[
+              { title: <Link to="/">Home</Link> },
+              { title: <span className="text-emerald-600 font-bold">Our Team</span> },
+            ]}
+          />
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center shadow-md text-emerald-600 border border-slate-100 mb-2 rotate-3 hover:rotate-0 transition-transform duration-300">
+              <TeamOutlined style={{ fontSize: '32px' }} />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight font-outfit uppercase leading-tight">
+              Meet The <span className="text-emerald-500 text-glow">Experts</span>
+            </h1>
+            <p className="text-slate-500 text-lg font-medium max-w-2xl mx-auto italic">
+              "The visionary minds behind the next generation of computing performance and design innovation."
+            </p>
+          </div>
+        </div>
 
         {/* Updated grid: 4 columns on large screens */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {teamMembers.map(member => (
             <div
               key={member.id}
-              className="group relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="group relative"
             >
-              <div className="overflow-hidden">
-                <img
-                  src={member.img}
-                  alt={member.name}
-                  className="w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-4 text-center">
-                <h2 className="font-semibold text-lg">{member.name}</h2>
-                <p className="text-gray-500 text-sm mb-3">{member.role}</p>
-                <div className="flex justify-center gap-4">
-                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-                    <LinkedinOutlined className="text-gray-700 hover:text-blue-600 text-xl" />
-                  </a>
-                  <a href={member.facebook} target="_blank" rel="noopener noreferrer">
-                    <FacebookOutlined className="text-gray-700 hover:text-blue-500 text-xl" />
-                  </a>
+              {/* Card Decoration */}
+              <div className="absolute inset-x-0 -bottom-4 h-full bg-slate-200/50 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className="relative bg-white rounded-[3rem] overflow-hidden premium-shadow border border-slate-100 transition-all duration-500 hover:-translate-y-4 group-active:scale-95 flex flex-col h-full">
+                {/* Image Wrapper */}
+                <div className="relative h-80 overflow-hidden">
+                  <div className="absolute inset-0 bg-slate-100 group-hover:bg-emerald-600 transition-colors duration-700"></div>
+                  <img
+                    src={member.img}
+                    alt={member.name}
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:opacity-60 mix-blend-multiply"
+                    onError={(e) => {
+                      e.target.src = "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=600&auto=format&fit=crop";
+                    }}
+                  />
+
+                  {/* Overlay Socials */}
+                  <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 translate-y-10 group-hover:translate-y-0 transition-all duration-500">
+                    <a href={member.linkedin} className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 hover:bg-emerald-500 hover:text-white transition-all shadow-xl active:scale-90">
+                      <LinkedinOutlined style={{ fontSize: '20px' }} />
+                    </a>
+                    <a href={member.facebook} className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 hover:bg-emerald-500 hover:text-white transition-all shadow-xl active:scale-90">
+                      <FacebookOutlined style={{ fontSize: '20px' }} />
+                    </a>
+                  </div>
                 </div>
+
+                {/* Content */}
+                <div className="p-8 text-center flex-grow flex flex-col">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <ThunderboltOutlined className="text-emerald-500 text-[10px]" />
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Industry Leader</span>
+                  </div>
+                  <h2 className="font-black text-slate-900 text-2xl font-outfit uppercase tracking-tight group-hover:text-emerald-600 transition-colors">{member.name}</h2>
+                  <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] mt-2 italic">{member.role}</p>
+                </div>
+
+                {/* Decorative background circle */}
+                <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-emerald-500/5 rounded-full border border-emerald-500/10 group-hover:scale-[3] transition-transform duration-1000"></div>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>

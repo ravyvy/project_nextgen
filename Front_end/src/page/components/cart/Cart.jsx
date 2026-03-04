@@ -2,14 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "react-use-cart";
 import Navbar from "../navbar";
 import Footer from "../footer";
-import { Modal, Input, message } from "antd";
+import { Modal, Input, message, Breadcrumb, Empty, Tooltip } from "antd";
+import {
+    ShoppingCartOutlined,
+    DeleteOutlined,
+    PlusOutlined,
+    MinusOutlined,
+    EnvironmentOutlined,
+    PhoneOutlined,
+    UserOutlined,
+    FilePdfOutlined,
+    CheckCircleFilled,
+    ArrowRightOutlined,
+    ThunderboltOutlined
+} from "@ant-design/icons";
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 // Required for PDF generation
-import jsPDF from "jspdf";
+import jsPDF from "jsPDF";
 import autoTable from "jspdf-autotable";
 
 // Fix Leaflet default marker icon issue
@@ -159,10 +173,10 @@ const Cart = () => {
         });
 
         // Colors
-        const green = [22, 163, 74];      // green-600
-        const dark = [17, 24, 39];        // gray-900
-        const gray = [107, 114, 128];     // gray-500
-        const light = [243, 244, 246];    // gray-100
+        const green = [16, 185, 129];     // emerald-500
+        const dark = [15, 23, 42];        // slate-900
+        const gray = [100, 116, 139];     // slate-500
+        const light = [248, 250, 252];    // slate-50
 
         // Header background
         doc.setFillColor(...green);
@@ -182,10 +196,10 @@ const Cart = () => {
         // Shop info (top right)
         doc.setFontSize(14);
         doc.setTextColor(255);
-        doc.text("Nextgen", 190, 24, { align: "right" });
+        doc.text("Project Nextgen", 190, 24, { align: "right" });
         doc.setFontSize(10);
         doc.text("Phnom Penh, Cambodia", 190, 32, { align: "right" });
-        doc.text("nextgen@gmail.shop", 190, 40, { align: "right" });
+        doc.text("shop@nextgen.com", 190, 40, { align: "right" });
 
         let y = 65;
 
@@ -216,7 +230,7 @@ const Cart = () => {
 
         doc.setTextColor(...dark);
         doc.text(orderDetails.orderDate, 175, 65, { align: "right" });
-        doc.text("Pending", 175, 73, { align: "right" });
+        doc.text("Confirmed", 175, 73, { align: "right" });
         doc.text("Cash on Delivery", 175, 81, { align: "right" });
 
         y = 105;
@@ -261,8 +275,8 @@ const Cart = () => {
         doc.text("Subtotal", 130, finalY + 3);
         doc.text(`$${Number(orderDetails.total || 0).toFixed(2)}`, 190, finalY + 3, { align: "right" });
 
-        doc.text("Delivery ", 130, finalY + 10);
-        doc.text("$5", 190, finalY + 10, { align: "right" });
+        doc.text("Delivery Fee", 130, finalY + 10);
+        doc.text("Free", 190, finalY + 10, { align: "right" });
 
         doc.setLineWidth(0.8);
         doc.line(130, finalY + 15, 190, finalY + 15);
@@ -271,232 +285,385 @@ const Cart = () => {
         doc.setFont("helvetica", "bold");
         doc.text("Total", 130, finalY + 25);
         doc.setTextColor(...green);
-        doc.text(`$${Number(orderDetails.total + 5 || 0).toFixed(2)}`, 190, finalY + 25, { align: "right" });
+        doc.text(`$${Number(orderDetails.total || 0).toFixed(2)}`, 190, finalY + 25, { align: "right" });
 
         // Footer thank you message
         doc.setFontSize(10);
         doc.setTextColor(...gray);
         const thankY = 260;
-        doc.text("Thank you for shopping with us!", 105, thankY, { align: "center" });
-        doc.text("We will contact you soon to confirm delivery.", 105, thankY + 6, { align: "center" });
+        doc.text("Thank you for your premium purchase!", 105, thankY, { align: "center" });
+        doc.text("Your items are being prepared for rapid dispatch.", 105, thankY + 6, { align: "center" });
 
         // Download
-        const fileName = `Invoice_${orderDetails.userName?.replace(/\s+/g, "_") || "order"}_${new Date().toISOString().slice(0, 10)}.pdf`;
+        const fileName = `Invoice_Nextgen_${orderDetails.userName?.replace(/\s+/g, "_") || "order"}.pdf`;
         doc.save(fileName);
     };
 
     return (
-        <>
+        <div className="min-h-screen bg-slate-50 flex flex-col font-inter transition-all duration-300">
             <Navbar />
 
-            <div className="max-w-[900px] mx-auto mt-10 bg-white p-5 rounded shadow mb-30">
-                <h1 className="text-3xl font-bold mb-5">Your Cart</h1>
+            <main className="flex-grow max-w-[1200px] w-full mx-auto px-4 lg:px-10 py-12">
+                {/* Header Section */}
+                <div className="mb-12">
+                    <Breadcrumb
+                        className="mb-4 text-xs uppercase font-bold tracking-widest transition-opacity"
+                        items={[
+                            { title: <Link to="/">Home</Link> },
+                            { title: <span className="text-emerald-600 font-bold">Cart</span> },
+                        ]}
+                    />
+                    <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-md text-emerald-600 border border-slate-100 transform hover:rotate-6 transition-transform">
+                            <ShoppingCartOutlined style={{ fontSize: '28px' }} />
+                        </div>
+                        <div>
+                            <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight font-outfit uppercase leading-tight">
+                                Your <span className="text-emerald-500">Shopping Cart</span>
+                            </h1>
+                            <p className="text-slate-500 text-lg font-medium">Review your selection before we deliver your premium gear.</p>
+                        </div>
+                    </div>
+                </div>
 
-                {items.length === 0 && <h2 className="text-gray-600">Your cart is empty.</h2>}
+                {items.length === 0 ? (
+                    <div className="py-24 flex justify-center bg-white rounded-[2.5rem] premium-shadow border border-slate-100">
+                        <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description={
+                                <div className="space-y-4 text-center">
+                                    <p className="text-xl font-bold text-slate-700">Your cart is empty</p>
+                                    <p className="text-slate-500 max-w-xs mx-auto">Looks like you haven't added any products to your cart yet.</p>
+                                    <Link to="/" className="inline-block mt-4 bg-emerald-500 text-white px-8 py-3 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-emerald-600 transition-all hover:shadow-lg hover:shadow-emerald-500/25">Start Shopping</Link>
+                                </div>
+                            }
+                        />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                        {/* Items List */}
+                        <div className="lg:col-span-2 space-y-6">
+                            {items.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="group bg-white rounded-[2rem] p-6 premium-shadow border border-slate-100 flex flex-col sm:flex-row items-center gap-8 relative overflow-hidden transition-all duration-300 hover:border-emerald-200"
+                                >
+                                    <Link to={`/categories/details/${item.id}`} className="relative w-32 h-32 p-4 bg-slate-50 rounded-2xl shadow-inner transition-transform duration-500 group-hover:scale-105 overflow-hidden flex items-center justify-center">
+                                        <img
+                                            src={item.img}
+                                            alt={item.title}
+                                            className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-700"
+                                        />
+                                    </Link>
 
-                {items.map((item) => (
-                    <div key={item.id} className="flex items-center gap-4 border-b pb-3 mb-3">
-                        <img src={item.img} alt={item.title} className="w-[100px] object-cover rounded" />
-                        <div className="flex-1">
-                            <h2 className="font-bold">{item.title}</h2>
-                            <p className="text-green-600 font-medium">${item.price}</p>
-                            <div className="flex items-center gap-2 mt-1">
+                                    <div className="flex-grow text-center sm:text-left">
+                                        <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                                            <ThunderboltOutlined className="text-emerald-500 text-xs" />
+                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Premium Selection</span>
+                                        </div>
+                                        <Link to={`/categories/details/${item.id}`}>
+                                            <h2 className="font-black text-slate-800 text-2xl mb-2 font-outfit hover:text-emerald-600 transition-colors line-clamp-1">{item.title}</h2>
+                                        </Link>
+                                        <p className="text-emerald-600 font-black text-xl mb-4 font-outfit tracking-tight">${item.price}</p>
+
+                                        <div className="flex items-center justify-center sm:justify-start gap-4">
+                                            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+                                                <button
+                                                    className="w-10 h-10 flex items-center justify-center bg-white hover:bg-emerald-500 hover:text-white rounded-lg shadow-sm transition-all"
+                                                    onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
+                                                >
+                                                    <MinusOutlined style={{ fontSize: '10px' }} />
+                                                </button>
+                                                <span className="w-10 text-center font-black text-slate-900">{item.quantity}</span>
+                                                <button
+                                                    className="w-10 h-10 flex items-center justify-center bg-white hover:bg-emerald-500 hover:text-white rounded-lg shadow-sm transition-all"
+                                                    onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
+                                                >
+                                                    <PlusOutlined style={{ fontSize: '10px' }} />
+                                                </button>
+                                            </div>
+                                            <button
+                                                className="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
+                                                onClick={() => removeItem(item.id)}
+                                            >
+                                                <DeleteOutlined style={{ fontSize: '20px' }} />
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Decorative background price watermark */}
+                                    <div className="absolute -bottom-8 -right-4 text-8xl font-black text-slate-900/[0.03] pointer-events-none select-none italic tracking-tighter">
+                                        ${item.price}
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="flex pt-4">
                                 <button
-                                    className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                                    onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
+                                    className="group flex items-center gap-3 text-slate-400 hover:text-rose-500 font-black uppercase tracking-widest text-xs transition-all"
+                                    onClick={emptyCart}
                                 >
-                                    -
-                                </button>
-                                <span className="w-10 text-center">Qty: {item.quantity}</span>
-                                <button
-                                    className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                                    onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
-                                >
-                                    +
+                                    <div className="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center group-hover:bg-rose-50 transition-colors">
+                                        <DeleteOutlined />
+                                    </div>
+                                    Empty Entire Cart
                                 </button>
                             </div>
                         </div>
-                        <button
-                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
-                            onClick={() => removeItem(item.id)}
-                        >
-                            Remove
-                        </button>
-                    </div>
-                ))}
 
-                {items.length > 0 && (
-                    <div className="mt-6">
-                        <h2 className="text-2xl font-bold text-right">Total: ${cartTotal.toFixed(2)}</h2>
-                        <div className="flex justify-end gap-4 mt-4">
-                            <button
-                                className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded"
-                                onClick={emptyCart}
-                            >
-                                Empty Cart
-                            </button>
-                            <button
-                                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded"
-                                onClick={showModal}
-                            >
-                                Check Out
-                            </button>
+                        {/* Summary Card */}
+                        <div className="lg:col-start-3">
+                            <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white premium-shadow sticky top-10 border border-slate-800">
+                                <h3 className="text-3xl font-black mb-8 font-outfit uppercase tracking-tight flex items-center gap-4">
+                                    Summary <div className="h-[2px] w-12 bg-emerald-500"></div>
+                                </h3>
+
+                                <div className="space-y-6 mb-10 overflow-hidden">
+                                    <div className="flex justify-between items-center group">
+                                        <span className="text-slate-400 font-bold uppercase tracking-widest text-xs group-hover:text-emerald-400 transition-colors">Subtotal</span>
+                                        <span className="text-xl font-black font-outfit tracking-tight translate-x-0 group-hover:-translate-x-2 transition-transform">${cartTotal.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center group">
+                                        <span className="text-slate-400 font-bold uppercase tracking-widest text-xs group-hover:text-emerald-400 transition-colors">Delivery</span>
+                                        <span className="text-emerald-500 font-black text-xs uppercase tracking-[0.2em] translate-x-0 group-hover:-translate-x-2 transition-transform">Free</span>
+                                    </div>
+                                    <hr className="border-slate-800" />
+                                    <div className="flex justify-between items-end">
+                                        <span className="text-slate-200 font-black uppercase tracking-widest text-sm">Total Amount</span>
+                                        <span className="text-5xl font-black text-emerald-500 font-outfit tracking-tighter">${cartTotal.toFixed(2)}</span>
+                                    </div>
+                                </div>
+
+                                <button
+                                    className="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 py-6 rounded-3xl font-black uppercase tracking-[0.15em] transition-all hover:shadow-2xl hover:shadow-emerald-500/30 active:scale-95 flex items-center justify-center gap-4 group mb-4"
+                                    onClick={showModal}
+                                >
+                                    Secure Checkout
+                                    <ArrowRightOutlined className="transition-transform group-hover:translate-x-2" />
+                                </button>
+
+                                <p className="text-center text-slate-500 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                                    <CheckCircleFilled className="text-emerald-500" /> Secure SSL Encrypted Checkout
+                                </p>
+                            </div>
                         </div>
                     </div>
                 )}
 
                 {/* ─── Checkout Modal ──────────────────────────────────────── */}
                 <Modal
-                    title="Complete Your Order"
-                    open={isModalOpen}
-                    onOk={handleSubmitOrder}
-                    onCancel={handleCancel}
-                    okText="Submit Order"
-                    okButtonProps={{ disabled: !position || !name || !phone }}
-                    width={700}
-                >
-                    <div className="mb-6">
-                        <h3 className="text-lg font-bold mb-3">Order Summary</h3>
-                        {items.map((item) => (
-                            <div key={item.id} className="flex justify-between py-1 border-b">
-                                <span>{item.title} × {item.quantity}</span>
-                                <span>${(item.price * item.quantity).toFixed(2)}</span>
+                    title={
+                        <div className="flex items-center gap-3 py-2">
+                            <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                                <EnvironmentOutlined />
                             </div>
-                        ))}
-                        <div className="flex justify-between font-bold mt-3 text-lg">
-                            <span>Total:</span>
-                            <span>${cartTotal.toFixed(2)}</span>
+                            <div>
+                                <span className="text-slate-900 font-black uppercase tracking-tight text-xl font-outfit">Checkout Details</span>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Confirm your delivery location</p>
+                            </div>
+                        </div>
+                    }
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    footer={null}
+                    width={800}
+                    centered
+                    className="premium-modal"
+                    bodyStyle={{ padding: '0' }}
+                    closeIcon={<div className="w-10 h-10 mt-2 mr-2 flex items-center justify-center rounded-xl bg-slate-100 text-slate-500 hover:bg-rose-500 hover:text-white transition-all"><ArrowRightOutlined className="rotate-45" /></div>}
+                >
+                    <div className="bg-white rounded-b-[2.5rem] overflow-hidden">
+                        <div className="grid grid-cols-1 md:grid-cols-2">
+                            {/* Left: Form */}
+                            <div className="p-10 border-r border-slate-50">
+                                <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight mb-6 font-outfit">Contact Information</h3>
+                                <div className="space-y-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Name</label>
+                                        <Input
+                                            placeholder="John Doe"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            size="large"
+                                            className="premium-input"
+                                            prefix={<UserOutlined className="text-emerald-500" />}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Phone Number</label>
+                                        <Input
+                                            placeholder="+855 000 000"
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            size="large"
+                                            className="premium-input"
+                                            prefix={<PhoneOutlined className="text-emerald-500" />}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="mt-10 p-6 bg-slate-50 rounded-3xl border border-slate-100">
+                                    <h4 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Order Summary</h4>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-slate-600 font-bold text-[13px] italic">{items.length} Premium Items</span>
+                                            <span className="text-slate-900 font-black tracking-tight font-outfit">${cartTotal.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center text-emerald-600 font-black text-[13px]">
+                                            <span className="italic">Delivery</span>
+                                            <span>Free</span>
+                                        </div>
+                                        <hr className="border-slate-200 border-dashed" />
+                                        <div className="flex justify-between items-center text-slate-900 font-black text-lg">
+                                            <span className="font-outfit">Grand Total</span>
+                                            <span className="font-outfit">${cartTotal.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button
+                                    className="w-full mt-10 bg-slate-900 text-white py-5 rounded-2xl font-black uppercase tracking-widest transition-all hover:bg-emerald-600 active:scale-95 disabled:opacity-30 disabled:hover:bg-slate-900 disabled:cursor-not-allowed group shadow-xl shadow-slate-200"
+                                    onClick={handleSubmitOrder}
+                                    disabled={!position || !name || !phone}
+                                >
+                                    Confirm Premium Order
+                                    <ArrowRightOutlined className="ml-3 transition-transform group-hover:translate-x-2" />
+                                </button>
+                            </div>
+
+                            {/* Right: Map */}
+                            <div className="p-10 bg-slate-50 flex flex-col">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight font-outfit">Pin Location</h3>
+                                    {!position && <span className="text-rose-500 animate-pulse text-[10px] font-black tracking-widest uppercase">Required</span>}
+                                </div>
+                                <div className="flex-grow rounded-3xl overflow-hidden shadow-inner border-2 border-white relative">
+                                    <MapContainer
+                                        center={mapCenter}
+                                        zoom={mapCenter[0] === 12.5657 ? 7 : 15}
+                                        style={{ height: "100%", width: "100%" }}
+                                        className="checkout-map"
+                                    >
+                                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                                        <LocationPicker position={position} setPosition={setPosition} />
+                                        <UserLocationSetter setPosition={setPosition} setMapCenter={setMapCenter} />
+                                    </MapContainer>
+
+                                    {!position && (
+                                        <div className="absolute inset-x-0 bottom-4 px-4 pointer-events-none">
+                                            <div className="bg-slate-900/80 backdrop-blur text-white px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest text-center border border-white/10">
+                                                Click map to pin address
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="mt-6">
+                                    <div className="flex items-center gap-3 text-slate-400 capitalize">
+                                        <EnvironmentOutlined className="text-emerald-500" />
+                                        <span className="text-xs font-bold truncate">
+                                            {position
+                                                ? `Coordinates: ${position[0].toFixed(6)}, ${position[1].toFixed(6)}`
+                                                : "Awaiting location selection..."}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div className="space-y-3">
-                        <div className="mt-5">
-                            <Input
-                                placeholder="Your Name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                size="large"
-                            />
-                        </div>
-                        <div>
-                            <Input
-                                placeholder="Phone Number"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                size="large"
-                            />
-                        </div>
-                    </div>
-
-                    <p className="mt-6 mb-2 font-semibold">Delivery Location:</p>
-                    <p className="text-sm text-gray-600 mb-3">
-                        We try to auto-detect your location. You can also click the map to adjust.
-                    </p>
-
-                    <MapContainer
-                        center={mapCenter}
-                        zoom={mapCenter[0] === 12.5657 ? 7 : 15}
-                        style={{ height: "350px", width: "100%", borderRadius: "8px" }}
-                    >
-                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                        <LocationPicker position={position} setPosition={setPosition} />
-                        <UserLocationSetter setPosition={setPosition} setMapCenter={setMapCenter} />
-                    </MapContainer>
-
-                    {position && (
-                        <p className="mt-3 text-gray-700 text-center">
-                            Selected: <strong>Lat {position[0].toFixed(5)}</strong> ,{" "}
-                            <strong>Lng {position[1].toFixed(5)}</strong>
-                        </p>
-                    )}
                 </Modal>
 
-                {/* ─── Invoice Modal + PDF button ──────────────────────────── */}
+                {/* ─── Invoice Modal ────────────────────────────────────────── */}
                 <Modal
-                    title="Order Invoice"
+                    title={null}
                     open={isInvoiceOpen}
                     onCancel={handleCloseInvoice}
-                    footer={[
-                        <button
-                            key="download"
-                            className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium ms-5 me-3"
-                            onClick={generateInvoicePDF}
-                        >
-                            Download PDF Invoice
-                        </button>,
-                        <button
-                            key="close"
-                            className="px-5 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md"
-                            onClick={handleCloseInvoice}
-                        >
-                            Close
-                        </button>,
-                    ]}
-                    width={800}
+                    footer={null}
+                    width={700}
+                    centered
+                    className="premium-modal no-header"
+                    bodyStyle={{ padding: '0' }}
                 >
                     {orderDetails && (
-                        <div className="p-4 bg-gray-50 rounded-lg">
-                            <div className="text-center mb-6">
-                                <h2 className="text-2xl font-bold text-green-700">Thank You for Your Order!</h2>
-                                <p className="text-gray-600 mt-1">Order placed on {orderDetails.orderDate}</p>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6 mb-6">
-                                <div>
-                                    <h3 className="font-semibold">Customer</h3>
-                                    <p>{orderDetails.userName || "—"}</p>
-                                    <p>{orderDetails.phone || "—"}</p>
+                        <div className="bg-white rounded-[2.5rem] overflow-hidden text-slate-900">
+                            {/* Invoice Header */}
+                            <div className="bg-emerald-500 p-12 text-white flex justify-between items-end relative overflow-hidden">
+                                <div className="relative z-10">
+                                    <h2 className="text-5xl font-black font-outfit tracking-tighter mb-2">THANK YOU</h2>
+                                    <p className="text-emerald-100 font-bold uppercase tracking-widest text-xs">Premium gear is on the way!</p>
                                 </div>
-                                <div>
-                                    <h3 className="font-semibold">Delivery Location</h3>
-                                    <p>
-                                        Lat: {orderDetails.address?.lat?.toFixed(5) || "—"}<br />
-                                        Lng: {orderDetails.address?.lng?.toFixed(5) || "—"}
-                                    </p>
+                                <div className="relative z-10 text-right">
+                                    <div className="text-2xl font-black font-outfit uppercase">Invoice</div>
+                                    <div className="text-[10px] font-black text-emerald-100 uppercase tracking-widest mt-1">Order Ref: {Date.now().toString().slice(-6)}</div>
+                                </div>
+                                {/* Background design */}
+                                <div className="absolute top-0 right-0 p-10 transform translate-x-10 -translate-y-10 opacity-10">
+                                    <ShoppingCartOutlined style={{ fontSize: '300px' }} />
                                 </div>
                             </div>
 
-                            <h3 className="font-bold text-lg mb-3">Order Items</h3>
-                            <div className="border rounded overflow-hidden">
-                                <table className="w-full text-left">
-                                    <thead className="bg-gray-100">
-                                        <tr>
-                                            <th className="p-3">Item</th>
-                                            <th className="p-3 text-center">Qty</th>
-                                            <th className="p-3 text-right">Price</th>
-                                            <th className="p-3 text-right">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {orderDetails.items.map((item) => (
-                                            <tr key={item.id} className="border-t">
-                                                <td className="p-3">{item.title || "—"}</td>
-                                                <td className="p-3 text-center">{item.quantity}</td>
-                                                <td className="p-3 text-right">${Number(item.price || 0).toFixed(2)}</td>
-                                                <td className="p-3 text-right font-medium">
-                                                    ${(item.quantity * Number(item.price || 0)).toFixed(2)}
-                                                </td>
-                                            </tr>
+                            <div className="p-12">
+                                <div className="grid grid-cols-2 gap-12 mb-12">
+                                    <div>
+                                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Customer Details</h4>
+                                        <p className="text-xl font-black font-outfit text-slate-900">{orderDetails.userName || "—"}</p>
+                                        <p className="text-slate-500 font-medium">{orderDetails.phone || "—"}</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Dispatch Address</h4>
+                                        <p className="text-slate-900 font-bold truncate">Lat: {orderDetails.address?.lat?.toFixed(5)}</p>
+                                        <p className="text-slate-900 font-bold">Lng: {orderDetails.address?.lng?.toFixed(5)}</p>
+                                    </div>
+                                </div>
+
+                                <div className="mb-12">
+                                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Premium Line Items</h4>
+                                    <div className="space-y-4">
+                                        {orderDetails.items?.map((item, idx) => (
+                                            <div key={idx} className="flex justify-between items-center py-4 border-b border-slate-50 group hover:border-emerald-100 transition-colors">
+                                                <div>
+                                                    <span className="text-slate-900 font-extrabold text-[15px]">{item.title}</span>
+                                                    <div className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mt-1">Quantity: {item.quantity}</div>
+                                                </div>
+                                                <span className="text-lg font-black font-outfit text-slate-900">${(item.quantity * item.price).toFixed(2)}</span>
+                                            </div>
                                         ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                    </div>
+                                </div>
 
-                            <div className="flex justify-between mt-6 text-xl font-bold">
-                                <span>Grand Total:</span>
-                                <span className="text-green-700">${Number(orderDetails.total || 0).toFixed(2)}</span>
-                            </div>
+                                <div className="bg-slate-50 rounded-[2rem] p-8 flex flex-col items-center sm:flex-row sm:justify-between sm:items-end gap-6">
+                                    <div className="text-center sm:text-left">
+                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Transaction</span>
+                                        <div className="text-5xl font-black text-slate-900 font-outfit tracking-tighter mt-2">${orderDetails.total?.toFixed(2)}</div>
+                                    </div>
+                                    <div className="flex gap-4 w-full sm:w-auto">
+                                        <button
+                                            className="flex-grow sm:flex-grow-0 bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all shadow-lg shadow-emerald-500/20 active:scale-95 flex items-center justify-center gap-3"
+                                            onClick={generateInvoicePDF}
+                                        >
+                                            <FilePdfOutlined />
+                                            Save Invoice
+                                        </button>
+                                        <button
+                                            className="flex-grow sm:flex-grow-0 bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all active:scale-95"
+                                            onClick={handleCloseInvoice}
+                                        >
+                                            Dismiss
+                                        </button>
+                                    </div>
+                                </div>
 
-                            <p className="text-center mt-8 text-gray-500 text-sm">
-                                We will contact you soon for delivery confirmation.
-                            </p>
+                                <p className="text-center text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-10 italic">
+                                    Thank you for being part of the Nextgen community.
+                                </p>
+                            </div>
                         </div>
                     )}
                 </Modal>
-            </div>
+            </main>
 
             <Footer />
-        </>
+        </div>
     );
 };
 

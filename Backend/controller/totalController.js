@@ -1,19 +1,19 @@
 const db = require('../database/db');
 
-const totalold = (req , res ) => {
-   const sql = "SELECT * FROM order_store";
-   db.query(sql , (err , data ) => {
-        if(err){
+const totalold = (req, res) => {
+    const sql = "SELECT * FROM order_store";
+    db.query(sql, (err, data) => {
+        if (err) {
             res.json({
-                status:false,
-                message:"Select data order_store field"
+                status: false,
+                message: "Select data order_store field"
             })
         }
         res.status(200).json({
-            message:'select success',
-            data : data
+            message: 'select success',
+            data: data
         })
-   })
+    })
 }
 // ====================== invoice===============
 const total = (req, res) => {
@@ -28,7 +28,7 @@ const total = (req, res) => {
 
         // ២. បន្ទាប់ពី Move ជោគជ័យ ទើបលុបចេញពី dborder
         const SQL_DELETE = "DELETE FROM dborder";
-        
+
         db.query(SQL_DELETE, (err, deleteData) => {
             if (err) return res.status(500).json({ error: "Delete failed: " + err.message });
 
@@ -41,7 +41,7 @@ const total = (req, res) => {
 };
 
 // store in order
-const storeOrder = (req , res ) => {
+const storeOrder = (req, res) => {
     const sqlQuery = "SELECT COUNT(id) AS totalOrders, SUM(total) AS totalAmount FROM order_store";
     db.query(sqlQuery, (err, results) => {
         if (err) {
@@ -53,13 +53,13 @@ const storeOrder = (req , res ) => {
         res.json({
             success: true,
             data: {
-                message:"Get success",
+                message: "Get success",
                 total_records: stats.totalOrders,
                 grand_total: parseFloat(stats.totalAmount || 0)
             }
         });
     });
-} 
+}
 
 const totaluser = (req, res) => {
     const sqlQuery = "SELECT COUNT(id) AS usertotal FROM users";
@@ -105,10 +105,10 @@ const getMonthlySales = (req, res) => {
         SUM(total) AS revenue 
         FROM  order_store
         WHERE YEAR(createdAt) = YEAR(CURDATE())
-        GROUP BY MONTH(createdAt)
+        GROUP BY MONTH(createdAt), month
         ORDER BY MONTH(createdAt)
     `;
-         
+
     //      SELECT 
     // DATE_FORMAT(createdAt, '%d %b') AS day, 
     // SUM(total) AS revenue 
@@ -123,7 +123,7 @@ const getMonthlySales = (req, res) => {
         res.json({ success: true, data: results });
     });
 };
-const get_total = (req , res ) => {
+const get_total = (req, res) => {
     const sqlQuery = "SELECT COUNT(id) AS totalOrders, SUM(total) AS totalAmount FROM dborder";
     db.query(sqlQuery, (err, results) => {
         if (err) {
@@ -135,13 +135,13 @@ const get_total = (req , res ) => {
         res.json({
             success: true,
             data: {
-                message:"Get success dborder",
+                message: "Get success dborder",
                 total_records: stats.totalOrders,
                 grand_total: parseFloat(stats.totalAmount || 0)
             }
         });
     });
-} 
+}
 module.exports = {
     total,
     totaluser,

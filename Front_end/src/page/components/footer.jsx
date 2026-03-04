@@ -1,85 +1,109 @@
-// Footer.jsx
 import React from 'react';
-import { Link } from 'react-router-dom'; // if using React Router
-// import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from 'react-icons/fa';  ← optional
+import { Link } from 'react-router-dom';
+import {
+  FacebookFilled,
+  InstagramFilled,
+  TwitterSquareFilled,
+  LinkedinFilled,
+  EnvironmentOutlined,
+  PhoneOutlined,
+  MailOutlined
+} from '@ant-design/icons';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="bg-slate-900 text-slate-400 pt-16 pb-8">
+      <div className="max-w-[1400px] mx-auto px-4 lg:px-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
 
-        {/* Main footer content */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-
-          {/* Column 1 - Brand / About */}
-          <div>
-            <h3 className="text-green-600 text-lg font-semibold mb-4" >Nextgen</h3>
-            <p className="text-sm">
-              Building beautiful digital experiences since {currentYear}.
+          {/* Column 1 - Brand & About */}
+          <div className="lg:col-span-2">
+            <Link to="/" className="inline-block mb-6">
+              <img
+                src="https://i.postimg.cc/fTSqrR8w/Screenshot-2026-01-24-125133.png"
+                className="h-10 w-auto object-contain brightness-0 invert"
+                alt="Nextgen Logo"
+              />
+            </Link>
+            <p className="text-slate-400 max-w-sm mb-8 leading-relaxed">
+              Your premier destination for high-end computing components and custom PC builds in Cambodia. We bring you the latest technology with world-class service.
             </p>
-          </div>
-
-          {/* Column 2 - Links */}
-          <div>
-            <h4 className="text-white font-medium mb-4">Company</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/about" className="hover:text-white transition-colors">Lattops</Link></li>
-              <li><Link to="/careers" className="hover:text-white transition-colors">Accessories</Link></li>
-              <li><Link to="/contact" className="hover:text-white transition-colors">CustomePcbuild</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 3 - Legal */}
-          <div>
-            <h4 className="text-white font-medium mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link to="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 4 - Social (optional) */}
-          <div>
-            <h4 className="text-white font-medium mb-4">Follow Us</h4>
-            <div className="flex space-x-4">
-              {/* Replace with your real links */}
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                {/* <FaFacebook size={20} /> */} FB
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all">
+                <FacebookFilled style={{ fontSize: '20px' }} />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                {/* <FaInstagram size={20} /> */} IG
+              <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all">
+                <InstagramFilled style={{ fontSize: '20px' }} />
               </a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                {/* <FaTwitter size={20} /> */} X
+              <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all">
+                <TwitterSquareFilled style={{ fontSize: '20px' }} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                {/* <FaLinkedin size={20} /> */} LI
+              <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-all">
+                <LinkedinFilled style={{ fontSize: '20px' }} />
               </a>
             </div>
           </div>
-           {/* Column 3 - conte */}
+
+          {/* Column 2 - Quick Links */}
           <div>
-            <h4 className="text-white font-medium mb-4">Contact</h4>
-            <ul className="space-y-2 text-sm">
-              <li> QR Code </li>
-             <li>
-                <img src='https://i.postimg.cc/BQhZMN7L/IMG-4906.jpg' className='w-20' />
-             </li>
-             <li>Scan Now 🤷‍♀️</li>
+            <h4 className="text-white font-bold mb-6 tracking-wide uppercase text-xs">Categories</h4>
+            <ul className="space-y-4 text-sm font-medium">
+              <li><Link to="/categories/Rog" className="hover:text-emerald-500 transition-colors">ROG Series</Link></li>
+              <li><Link to="/categories/Msi" className="hover:text-emerald-500 transition-colors">MSI Gaming</Link></li>
+              <li><Link to="/categories/Apple" className="hover:text-emerald-500 transition-colors">Apple Ecosystem</Link></li>
+              <li><Link to="/categories/Accessoris" className="hover:text-emerald-500 transition-colors">Accessories</Link></li>
+              <li><Link to="/categories/CustomePcbuild" className="hover:text-emerald-500 transition-colors">Custom Builds</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 3 - Support */}
+          <div>
+            <h4 className="text-white font-bold mb-6 tracking-wide uppercase text-xs">Support</h4>
+            <ul className="space-y-4 text-sm font-medium">
+              <li><Link to="/contact" className="hover:text-emerald-500 transition-colors">Contact Us</Link></li>
+              <li><Link to="/privacy" className="hover:text-emerald-500 transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="hover:text-emerald-500 transition-colors">Terms of Service</Link></li>
+              <li><Link to="/warranty" className="hover:text-emerald-500 transition-colors">Warranty Info</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 4 - Contact Info */}
+          <div>
+            <h4 className="text-white font-bold mb-6 tracking-wide uppercase text-xs">Get In Touch</h4>
+            <ul className="space-y-4 text-sm font-medium">
+              <li className="flex items-start gap-3">
+                <EnvironmentOutlined className="text-emerald-500 mt-1" />
+                <span>Phnom Penh, Cambodia</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <PhoneOutlined className="text-emerald-500" />
+                <span>+855 12 345 678</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <MailOutlined className="text-emerald-500" />
+                <span>support@nextgen.com</span>
+              </li>
+              <li className="mt-6">
+                <div className="bg-white p-2 rounded-xl inline-block shadow-lg">
+                  <img src='https://i.postimg.cc/BQhZMN7L/IMG-4906.jpg' className='w-24 h-24 object-contain rounded-lg' alt="QR Code" />
+                </div>
+                <p className="text-[10px] mt-2 text-slate-500 font-bold uppercase tracking-widest">Scan for Telegram</p>
+              </li>
             </ul>
           </div>
         </div>
-        
 
-        {/* Bottom bar */}
-        <div className="text-red-600 mt-12 pt-8 border-t border-gray-800 text-center text-sm">
-          <p>© {currentYear} Nextgen. All rights reserved.</p>
-          <p className="mt-2 text-gray-500">Made with ❤️ in Phnom Penh</p>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm">
+            © {currentYear} Nextgen. All rights reserved.
+          </p>
+          <p className="text-xs text-slate-500 flex items-center gap-1">
+            Build with <span className="text-red-500">❤️</span> for the Gaming Community
+          </p>
         </div>
-
       </div>
     </footer>
   );
