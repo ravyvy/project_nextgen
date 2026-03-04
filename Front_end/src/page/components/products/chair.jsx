@@ -16,11 +16,7 @@ const Chair = () => {
     // Fetch data from API
     const fetchProducts = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get("https://project-nextgen-1dnjds.onrender.com/getall");
-=======
-        const response = await axios.get("http://localhost:9000/getall");
->>>>>>> 994f477629d7cec97f1254d41c64ebe40da539ef
         const apiData = response.data.data || [];
 
         // 🔥 Flatten and normalize image field
