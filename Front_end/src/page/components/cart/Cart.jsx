@@ -318,7 +318,7 @@ const Cart = () => {
                             <ShoppingCartOutlined style={{ fontSize: '28px' }} />
                         </div>
                         <div>
-                            <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight font-outfit uppercase leading-tight">
+                            <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight font-outfit uppercase leading-tight">
                                 Your <span className="text-emerald-500">Shopping Cart</span>
                             </h1>
                             <p className="text-slate-500 text-lg font-medium">Review your selection before we deliver your premium gear.</p>
@@ -392,7 +392,7 @@ const Cart = () => {
                                     </div>
 
                                     {/* Decorative background price watermark */}
-                                    <div className="absolute -bottom-8 -right-4 text-8xl font-black text-slate-900/[0.03] pointer-events-none select-none italic tracking-tighter">
+                                    <div className="absolute -bottom-2 -right-0 text-6xl font-black text-slate-900/[0.03] pointer-events-none select-none italic tracking-tighter">
                                         ${item.price}
                                     </div>
                                 </div>
@@ -414,7 +414,7 @@ const Cart = () => {
                         {/* Summary Card */}
                         <div className="lg:col-start-3">
                             <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white premium-shadow sticky top-10 border border-slate-800">
-                                <h3 className="text-3xl font-black mb-8 font-outfit uppercase tracking-tight flex items-center gap-4">
+                                <h3 className="text-2xl font-black mb-8 font-outfit uppercase tracking-tight flex items-center gap-4">
                                     Summary <div className="h-[2px] w-12 bg-emerald-500"></div>
                                 </h3>
 
@@ -430,7 +430,7 @@ const Cart = () => {
                                     <hr className="border-slate-800" />
                                     <div className="flex justify-between items-end">
                                         <span className="text-slate-200 font-black uppercase tracking-widest text-sm">Total Amount</span>
-                                        <span className="text-5xl font-black text-emerald-500 font-outfit tracking-tighter">${cartTotal.toFixed(2)}</span>
+                                        <span className="text-3xl font-black text-emerald-500 font-outfit tracking-tighter">${cartTotal.toFixed(2)}</span>
                                     </div>
                                 </div>
 

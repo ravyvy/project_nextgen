@@ -10,7 +10,7 @@ const ProductsLattop = () => {
 
   useEffect(() => {
     axios
-      .get("https://project-nextgen-1dnjds.onrender.com/getall")
+      .get(" https://project-nextgen-1dnjds.onrender.com/getall")
       .then((response) => {
         const productsArray = response.data.data;
         const groupedSections = categories.map((category) => {
@@ -71,16 +71,16 @@ const ProductsLattop = () => {
                     )}
                     <Link to={`/categories/details/${item.id}`} className="block h-full">
                       <img
-                        src={`https://project-nextgen-1dnjds.onrender.com/images/${item.img}`}
+                        src={` https://project-nextgen-1dnjds.onrender.com/images/${item.img}`}
                         alt={item.title}
                         className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110"
                       />
                     </Link>
 
                     {/* Floating Quick Add (Optional visual) */}
-                    <button className="absolute bottom-4 right-4 bg-emerald-500 text-white p-3 rounded-2xl shadow-xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all">
+                    <Link to={`/categories/details/${item.id}`} className="absolute bottom-4 right-4 bg-emerald-500 text-white p-3 rounded-2xl shadow-xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all">
                       <ShoppingCartOutlined style={{ fontSize: '20px' }} />
-                    </button>
+                    </Link>
                   </div>
 
                   {/* Content */}

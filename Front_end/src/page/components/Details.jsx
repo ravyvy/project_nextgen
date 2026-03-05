@@ -34,7 +34,7 @@ const Details = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get("https://project-nextgen-1dnjds.onrender.com/getall");
+        const response = await axios.get(" https://project-nextgen-1dnjds.onrender.com/getall");
         const apiData = response.data.data || [];
         let found = null;
 
@@ -126,7 +126,7 @@ const Details = () => {
         id: product.id,
         title: product.title,
         price: product.price || 0,
-        img: `https://project-nextgen-1dnjds.onrender.com/images/${product.img}`,
+        img: ` https://project-nextgen-1dnjds.onrender.com/images/${product.img}`,
         description: product.description,
         brand: product.brand,
         quantity: quantity,
@@ -173,7 +173,7 @@ const Details = () => {
 
           {/* Gallery Column */}
           <div className="lg:col-span-7">
-            <div className="relative group bg-white rounded-[3rem] overflow-hidden mb-8 p-12 premium-shadow border border-slate-100 flex items-center justify-center min-h-[500px] lg:min-h-[700px]">
+            <div className="relative group bg-white rounded-[3rem] overflow-hidden mb-8 p-12 premium-shadow border border-slate-100 flex items-center justify-center min-h-[500px] lg:min-h-[600px]">
               <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-20 transition-opacity">
                 <ThunderboltOutlined style={{ fontSize: '300px' }} />
               </div>
@@ -187,7 +187,7 @@ const Details = () => {
                 {images.map((img, index) => (
                   <div key={index} className="!flex items-center justify-center outline-none">
                     <img
-                      src={`https://project-nextgen-1dnjds.onrender.com/images/${img}`}
+                      src={` https://project-nextgen-1dnjds.onrender.com/images/${img}`}
                       alt={product.title}
                       className="max-w-full max-h-[400px] lg:max-h-[550px] object-contain mix-blend-multiply transition-all duration-700 group-hover:scale-110"
                     />
@@ -217,7 +217,7 @@ const Details = () => {
                   className={`w-28 h-28 p-4 bg-white border-2 rounded-[1.5rem] transition-all duration-500 overflow-hidden relative group/thumb ${currentImage === index ? "border-emerald-500 premium-shadow scale-105" : "border-slate-100 hover:border-slate-300"}`}
                 >
                   <img
-                    src={`https://project-nextgen-1dnjds.onrender.com/images/${img}`}
+                    src={` https://project-nextgen-1dnjds.onrender.com/images/${img}`}
                     alt="thumbnail"
                     className="w-full h-full object-contain mix-blend-multiply transition-transform group-hover/thumb:scale-110"
                   />
@@ -238,7 +238,7 @@ const Details = () => {
                 <span className="text-slate-400 font-black uppercase tracking-widest text-[10px]">Reference: #{product.id}</span>
               </div>
 
-              <h1 className="text-slate-900 text-4xl lg:text-5xl font-black leading-tight mb-6 font-outfit uppercase tracking-tight">
+              <h1 className="text-slate-900 text-2xl lg:text-3xl font-black leading-tight mb-6 font-outfit uppercase tracking-tight">
                 {product.title}
               </h1>
 

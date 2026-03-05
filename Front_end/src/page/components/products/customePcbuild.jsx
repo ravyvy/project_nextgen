@@ -200,9 +200,17 @@ const CustomePcbuild = () => {
             <p className="text-slate-400 text-lg leading-relaxed mb-8">
               Our experts are ready to help you optimize your build for gaming, streaming, or professional productivity.
             </p>
-            <button className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all hover:shadow-lg hover:shadow-emerald-500/25 flex items-center gap-3 active:scale-95">
-              Contact Support <ThunderboltOutlined />
-            </button>
+         <Link
+  to="/team"
+  className="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-8 py-4 rounded-2xl font-black uppercase tracking-widest transition-all 
+  /* Shadow ពេលធម្មតា (Emerald) */
+  shadow-lg shadow-emerald-500/25 
+  /* Shadow ពេល Hover (White) */
+  hover:shadow-xl hover:shadow-white/40 
+  active:scale-95 no-underline border-none"
+>
+  Contact Support <ThunderboltOutlined />
+</Link>
           </div>
           <div className="relative z-10 w-full md:w-1/3 aspect-square bg-emerald-500/10 rounded-full border border-emerald-500/20 backdrop-blur-3xl flex items-center justify-center p-10 animate-pulse-slow">
             <ExperimentOutlined className="text-[100px] text-emerald-500 opacity-50" />
@@ -281,12 +289,6 @@ const CustomePcbuild = () => {
                     >
                       Specifications
                     </Link>
-                    <button
-                      onClick={() => handleAddToCart(p)}
-                      className="w-full sm:w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center text-xl transition-all hover:bg-emerald-600 hover:shadow-xl hover:shadow-emerald-500/30 group-hover:bg-emerald-600 active:scale-90"
-                    >
-                      <ShoppingCartOutlined />
-                    </button>
                   </div>
 
                   {/* Decorative background number */}

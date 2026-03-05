@@ -69,8 +69,7 @@ const Navbar = () => {
       {/* Top Bar - Scrolling Text or Announcement */}
       <div className="bg-emerald-600 text-white py-1.5 overflow-hidden whitespace-nowrap">
         <div className="animate-marquee inline-block px-4">
-          <BankOutlined className="mr-2" />
-          មានលក់កុំព្យូទ័រច្រើនប្រភេទ តម្លៃសមរម្យ មានគុណភាពល្អ និងមានការធានា — Best Prices in Cambodia — High Quality & Warranty
+          <p className="font-kamrang"><BankOutlined className="mr-2" />មានលក់កុំព្យូទ័រច្រើនប្រភេទ តម្លៃសមរម្យ មានគុណភាពល្អ និងមានការធានា — Best Prices in Cambodia — High Quality & Warranty</p>
         </div>
       </div>
 
@@ -82,8 +81,8 @@ const Navbar = () => {
             {/* Brand Logo */}
             <Link to="/" className="flex-shrink-0">
               <img
-                src="https://i.postimg.cc/fTSqrR8w/Screenshot-2026-01-24-125133.png"
-                className="h-10 lg:h-12 w-auto object-contain transition-transform hover:scale-105"
+                src="https://i.postimg.cc/QNpzXmhS/logonextgen.png"
+                className="h-10 lg:h-20 w-auto object-contain transition-transform hover:scale-105"
                 alt="Logo"
               />
             </Link>

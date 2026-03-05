@@ -22,8 +22,8 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
               <img
-                src="https://i.postimg.cc/fTSqrR8w/Screenshot-2026-01-24-125133.png"
-                className="h-10 w-auto object-contain brightness-0 invert"
+                src="https://i.postimg.cc/QNpzXmhS/logonextgen.png"
+                className="h-20 w-auto object-contain brightness-0 invert"
                 alt="Nextgen Logo"
               />
             </Link>
